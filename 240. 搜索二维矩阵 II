@@ -29,7 +29,7 @@
 
 从右上解开始，如果比 target 小，就往左移一位，如果比 target 大，就往下移一位。
 
-```
+```py
 class Solution:
     def searchMatrix(self, matrix, target):
         """
@@ -49,3 +49,5 @@ class Solution:
                     row += 1
         return False
 ```
+
+时间复杂度：最坏的情况下走到了对角最远的那一个，m+n 步，时间复杂度为 O(m+n)
