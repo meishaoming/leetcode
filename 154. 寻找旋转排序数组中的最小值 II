@@ -1,0 +1,24 @@
+[154. 寻找旋转排序数组中的最小值 II](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/)
+
+这题与 [153. 寻找旋转排序数组中的最小值](153.%20寻找旋转排序数组中的最小值.md) 类似，不同的是数组里的元素可能重复，所以要去除重复的值。
+
+二分法，旋转数组从中间切开，一边是升序，一边不是。
+
+1. 取中值，如果中值与尾值相等，砍掉尾值，再取中值
+2. 中值与尾值不等，就可以判断当前是否在升序部分。
+3. 从非升序部分继续二分
+
+```py
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        lo, hi = 0, len(nums)-1
+        while lo < hi:
+            mid = (lo+hi)//2
+            if nums[mid] == nums[hi]:
+                hi -= 1
+            elif nums[mid] < nums[hi]:
+                hi = mid
+            else:
+                lo = mid + 1
+        return nums[lo]
+```
