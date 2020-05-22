@@ -1,0 +1,17 @@
+[19. 删除链表的倒数第N个节点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)
+
+加个哨兵好处理。注意 fast 最后指向最后一个元素而不是 None（最后元素的 next）。
+
+```py
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        sentinel = ListNode(0)
+        sentinel.next = head
+        fast = slow = sentinel
+        for _ in range(n):
+            fast = fast.next
+        while fast.next:
+            fast, slow = fast.next, slow.next
+        slow.next = slow.next.next
+        return sentinel.next
+```
