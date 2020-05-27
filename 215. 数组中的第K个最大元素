@@ -1,0 +1,36 @@
+[215. 数组中的第K个最大元素](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
+
+面试中遇到了这题，没做出来。想着是快排来着，没想到可以丢掉一边（类似于二分法了）。
+
+```
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+
+        def partition(nums, p, r, pivot_index):
+            nums[pivot_index], nums[r] = nums[r], nums[pivot_index]
+            pivot = nums[r]
+            i = p
+            for k in range(p, r):
+                if nums[k] < pivot:
+                    nums[k], nums[i] = nums[i], nums[k]
+                    i += 1
+            nums[r], nums[i] = nums[i], nums[r]
+            return i
+
+        idx = len(nums) - k
+        def _quick_sort(nums, p, r):
+            if p < r:
+                pivot_index = random.randint(p, r) 
+                q = partition(nums, p, r, pivot_index)
+                if idx < q:
+                    _quick_sort(nums, p, q-1)
+                elif idx > q:
+                    _quick_sort(nums, q+1, r)
+            return nums[idx]
+
+        return _quick_sort(nums, 0, len(nums)-1)
+```
+
+另外这题的测试用例有点特殊，如果每次先 nums 的最后一位为 pivot 的话，时间会花很久，1900+ms。
+
+如果随机选择 pivot，那就很快。
