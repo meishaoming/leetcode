@@ -1,6 +1,8 @@
 [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)
 
-### 解法一：迭代、并归
+## 1
+
+迭代、并归
 
 ```py
 class Solution:
@@ -15,6 +17,3 @@ class Solution:
         p.next = l1 or l2
         return head.next
 ```
-
-### 解法二：递归
-
