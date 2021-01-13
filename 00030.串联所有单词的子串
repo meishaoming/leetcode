@@ -1,0 +1,53 @@
+### 1 暴力法
+
+```py
+class Solution:
+
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+
+        def get_counter(s, n):
+            arr = [s[i:i+n] for i in range(0, len(s), n)]
+            return Counter(arr)
+
+        n = len(words[0])
+        all_len = n*len(words)
+        ans = []
+        cc = Counter(words)
+        for i in range(len(s)-all_len+1):
+            cc1 = get_counter(s[i:i+all_len], n)
+            if cc == cc1:
+                ans.append(i)
+        return ans
+```
+
+### 2 滑动窗口
+
+1. 维护一个单词总长度的滑动窗口，从左往右滑，每次滑动「一个单词的长度」。
+2. 因为每次滑动了「一个单词的长度」，假设一个单词的长度是 4 ，那么就要滑 4 次：从 0、1、2、3 分别开始
+
+```
+class Solution:
+
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        n = len(words[0])
+        cc = Counter(words)
+        ans = []
+        for i in range(n):
+            cur_cnt = 0
+            left = right = i
+            cc1 = Counter()
+            while right + n <= len(s):
+                word = s[right:right+n]
+                right += n
+                cc1[word] += 1
+                cur_cnt += 1
+                # 嵌套在这里的第二个 while，意思是只要窗口里有一个 words 里不存在的单词，则持续滑动窗口左边界，直到滑出这个单词
+                while cc1[word] > cc[word]:
+                    w = s[left:left+n]
+                    left += n
+                    cc1[w] -= 1
+                    cur_cnt -= 1
+                if cur_cnt == len(words):
+                    ans.append(left)
+        return ans
+```
